@@ -2,7 +2,6 @@ import tensorflow as tf
 import numpy as np
 from tensorflow import keras
 
-
 NB_CLASSES = 10
 
 mnist = keras.datasets.mnist
@@ -36,14 +35,28 @@ Y_test =  keras.utils.to_categorical(Y_test, NB_CLASSES)
 
 print(Y_train[0])
 
-N_HIDDEN = 25
-DROPOUT = 0.15
+N_HIDDEN = 2500
+DROPOUT = 0.25
 
 #build the model
 model = tf.keras.models.Sequential()
 
-model.add(keras.layers.Dense(100,input_shape=(RESHAPED,),
+model.add(keras.layers.Dense(N_HIDDEN,input_shape=(RESHAPED,),
    		name='input_layer', activation='relu'))
+model.add(keras.layers.Dropout(DROPOUT))
+
+model.add(keras.layers.Dense(N_HIDDEN,
+   		name='hidden_layer_1', activation='relu'))
+model.add(keras.layers.Dropout(DROPOUT))
+
+model.add(keras.layers.Dense(N_HIDDEN,
+   		name='hidden_layer_2', activation='relu'))
+model.add(keras.layers.Dropout(DROPOUT))
+
+model.add(keras.layers.Dense(N_HIDDEN,
+   		name='hidden_layer_3', activation='relu'))
+model.add(keras.layers.Dropout(DROPOUT))
+
 model.add(keras.layers.Dense(NB_CLASSES,
    		name='output_layer', activation='softmax'))
 
@@ -54,13 +67,19 @@ model.compile(optimizer='Adam',
               metrics=['accuracy'])
 
 BATCH_SIZE = 50
-EPOCHS = 15
+EPOCHS = 7
 VERBOSE = True 
 VALIDATION_SPLIT = 0.2
 
 model.fit(X_train, Y_train, batch_size=BATCH_SIZE, epochs=EPOCHS,
 		verbose=VERBOSE, validation_split=VALIDATION_SPLIT)
 
+
+test_loss, test_acc = model.evaluate(X_test, Y_test)
+print('Test accuracy:', test_acc)
+
+# making prediction
+predictions = model.predict(X_test)
 
 
 
