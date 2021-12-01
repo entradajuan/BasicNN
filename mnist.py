@@ -81,5 +81,12 @@ print('Test accuracy:', test_acc)
 # making prediction
 predictions = model.predict(X_test)
 
+image =  X_test[0]
+model_input = np.array([image])
+print(model_input.shape)
+prediction = model.predict(model_input)
+
+#print(softmax(prediction[0]))
+print('Correct is ', np.argmax(Y_test[0]) , ' prediction is ', np.argmax(prediction[0]))
 
 
