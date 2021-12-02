@@ -32,3 +32,14 @@ def create_model():
 
 model=create_model()
 model.summary()
+#model.compile(optimizer='adam',loss='MSE', metrics=['accuracy'])
+model.compile(optimizer='RMSprop',loss='MSE', metrics=['accuracy'])
+
+BATCH_SIZE = 100
+EPOCHS = 15
+#model.fit(X_train, Y_train, batch_size=BATCH_SIZE, epochs=EPOCHS, verbose=True, validation_split=0.2)
+model.fit(X_train, Y_train, batch_size=BATCH_SIZE, epochs=EPOCHS, verbose=True, validation_data=(X_test, Y_test))
+
+score = model.evaluate(X_test, Y_test, batch_size=BATCH_SIZE)
+print("\nTest score:", score[0])
+print('Test accuracy:', score[1])
